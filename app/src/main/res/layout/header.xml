@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/gradient_color"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/userImage"
+        android:src="@drawable/photo"
+        android:layout_marginTop="30dp"
+        app:civ_border_width="1dp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:text="EXAMPLE"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/userImage"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        android:textStyle="bold|italic"
+        android:layout_marginTop="20dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt1"
+        android:text="Already Have an Account?"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="35dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="to Login"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="175dp"
+        android:layout_below="@+id/txt1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:id="@+id/loginNow"
+        android:text="Click Me"
+        android:background="@drawable/button"
+        android:textColor="@color/red"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/txt1"
+        android:textStyle="bold"
+        android:onClick="onLabelClick"/>
+    </RelativeLayout>
+</RelativeLayout>

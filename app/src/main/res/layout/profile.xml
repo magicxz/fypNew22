@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Profile">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:background="@drawable/gradient_color2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="70dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rela1"
+            android:layout_marginTop="30dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/userImage"
+                android:src="@drawable/photo"
+                android:layout_centerHorizontal="true"
+                android:elevation="1dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="85dp"
+                    app:contentPaddingTop="15dp"
+                    app:contentPaddingBottom="15dp"
+                    app:contentPaddingLeft="15dp"
+                    app:contentPadding="15dp"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/username"
+                            android:text="EXAMPLE"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="60dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email :"
+                            android:textSize="20dp"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/eEmail"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@drawable/ic_black_email" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phone :"
+                            android:textSize="20dp"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/ePhone"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@drawable/ic_black_phone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender :"
+                            android:textSize="20dp"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/eGender"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_horizontal"
+                            android:drawableLeft="@drawable/ic_black_person" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chgPass"
+                            android:text="Change Password"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="30dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_arrow_back"
+        android:id="@+id/back"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/txtProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:layout_marginLeft="60dp"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit"
+        android:text="Edit"
+        android:textSize="25dp"
+        android:gravity="right"
+        android:textColor="@color/white"
+        android:drawableRight="@drawable/ic_outline_edit"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/done"
+        android:text="Done"
+        android:textSize="25dp"
+        android:gravity="right"
+        android:textColor="@color/white"
+        android:drawableRight="@drawable/ic_outline_done"
+        android:layout_marginTop="40dp"
+        android:visibility="invisible"/>
+</RelativeLayout>

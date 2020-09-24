@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/navHome"
+            android:title="Home"
+            android:icon="@drawable/ic_outline_home"
+            android:checked="true"/>
+
+        <item
+            android:id="@+id/navProfile"
+            android:title="My Profile"
+            android:icon="@drawable/ic_outline_profile"/>
+
+        <item
+            android:id="@+id/navOrder"
+            android:title="My Orders"
+            android:icon="@drawable/ic_outline_order"/>
+
+        <item
+            android:id="@+id/navAddress"
+            android:title="My Address"
+            android:icon="@drawable/ic_outline_location"/>
+
+        <item
+            android:id="@+id/navNotification"
+            android:title="My Notification"
+            android:icon="@drawable/ic_outline_notifications"/>
+
+        <item
+            android:id="@+id/navVoucher"
+            android:title="My Vouchers"
+            android:icon="@drawable/ic_outline_voucher"/>
+    </group>
+
+    <item
+        android:id="@+id/navLogout"
+        android:title="Logout"
+        android:icon="@drawable/ic_outline_exit" />
+</menu>
