@@ -2,20 +2,29 @@ package com.example.fyp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.header.view.*
 import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.home.view.*
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -31,7 +40,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         viewPager.adapter = PageAdapter(supportFragmentManager)
         tab.setupWithViewPager(viewPager)
-
     }
 
     override fun onBackPressed() {
@@ -44,17 +52,21 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
-        when (p0.itemId){
+        when (p0.itemId) {
             R.id.navHome -> {
-                startActivity(Intent(this,Home::class.java))
+                startActivity(Intent(this, Home::class.java))
             }
             R.id.navProfile -> {
-                startActivity(Intent(this,Profile::class.java))
+                startActivity(Intent(this, Profile::class.java))
             }
-            R.id.navOrder -> {}
-            R.id.navAddress -> {}
-            R.id.navNotification -> {}
-            R.id.navVoucher -> {}
+            R.id.navOrder -> {
+            }
+            R.id.navAddress -> {
+            }
+            R.id.navNotification -> {
+            }
+            R.id.navVoucher -> {
+            }
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -66,3 +78,4 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
 }
+

@@ -10,28 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/userImage"
-        android:src="@drawable/photo"
-        android:layout_marginTop="30dp"
-        app:civ_border_width="1dp"
-        android:visibility="invisible"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/username"
-        android:text="EXAMPLE"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/userImage"
-        android:visibility="invisible"/>
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/show1">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,5 +63,7 @@
         android:layout_below="@+id/txt1"
         android:textStyle="bold"
         android:onClick="onLabelClick"/>
+        </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>
