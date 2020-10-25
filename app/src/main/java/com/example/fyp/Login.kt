@@ -1,13 +1,17 @@
 package com.example.fyp
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Patterns
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
+import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +20,11 @@ import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.actionbar.*
+import kotlinx.android.synthetic.main.actionbar.back
 import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.login.*
+import kotlinx.android.synthetic.main.profile.*
 import kotlinx.android.synthetic.main.register.*
 
 class Login : AppCompatActivity() {
@@ -26,6 +32,8 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
+
+        loadData()
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
@@ -54,11 +62,32 @@ class Login : AppCompatActivity() {
         btnLogin.setOnClickListener{
             loginUser()
         }
+
+        checkRmb.setOnCheckedChangeListener{ buttonView: CompoundButton?, isChecked: Boolean ->
+            if(checkRmb.isChecked){
+                val email = txtEmail.text.toString()
+                val pass = txtPass.text.toString()
+                val preference = getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+                val editor = preference.edit()
+                editor.putString("EMAIL",email)
+                editor.putString("PASSWORD",pass)
+                editor.putBoolean("CHECKBOX",isChecked)
+                editor.apply()
+            }
+        }
     }
 
     private fun loginUser(){
         val email=txtEmail.text.toString()
         val pass=txtPass.text.toString()
+        val checked: Boolean = checkRmb.isChecked
+        val preference = getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+        val editor = preference.edit()
+
+        editor.putString("EMAIL",email)
+        editor.putString("PASSWORD",pass)
+        editor.putBoolean("CHECKBOX",checked)
+        editor.apply()
 
         if(email.isEmpty()) {
             txtEmail.error = "Please enter your email"
@@ -103,6 +132,16 @@ class Login : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun loadData(){
+        val preference = getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+        val savedBoolean = preference.getBoolean("CHECKBOX",false)
+        val email = preference.getString("EMAIL","")
+        txtEmail.setText(email)
+        val pass = preference.getString("PASSWORD","")
+        txtPass.setText(pass)
+        checkRmb.isChecked = savedBoolean
     }
 
     override fun onStart() {
