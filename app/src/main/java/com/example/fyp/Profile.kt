@@ -56,6 +56,10 @@ class Profile : AppCompatActivity() {
             startActivity(Intent(this,Home::class.java))
         }
 
+        chgPass.setOnClickListener{
+            startActivity(Intent(this,ChangePassword::class.java))
+        }
+
         displayInfo()
 
         addPic.setOnClickListener{
