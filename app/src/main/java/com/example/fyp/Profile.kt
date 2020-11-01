@@ -6,32 +6,22 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
 import androidx.core.view.isVisible
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.actionbar.*
-import kotlinx.android.synthetic.main.actionbar.back
-import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.profile.*
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.header.*
 import java.io.IOException
-import java.util.*
 import kotlin.collections.HashMap
 
 class Profile : AppCompatActivity() {
@@ -54,10 +44,12 @@ class Profile : AppCompatActivity() {
 
         back1.setOnClickListener {
             startActivity(Intent(this,Home::class.java))
+            this.finish()
         }
 
         chgPass.setOnClickListener{
             startActivity(Intent(this,ChangePassword::class.java))
+            this.finish()
         }
 
         displayInfo()
@@ -73,7 +65,6 @@ class Profile : AppCompatActivity() {
 
       private fun displayInfo(){
           //var currentUser= FirebaseAuth.getInstance().currentUser!!.uid
-
           val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser)
 
         val edit = findViewById<TextView>(R.id.edit)
@@ -166,6 +157,7 @@ class Profile : AppCompatActivity() {
             progressDialog.dismiss()
             Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_SHORT).show()
             startActivity(Intent(this,Profile::class.java))
+            this.finish()
         }
 
         if(imageUri != null){
@@ -191,6 +183,7 @@ class Profile : AppCompatActivity() {
                     progressDialog.dismiss()
                     Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this,Profile::class.java))
+                    this.finish()
                 }
             }
         }

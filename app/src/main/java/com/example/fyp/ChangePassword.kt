@@ -20,6 +20,7 @@ class ChangePassword : AppCompatActivity() {
 
         back2.setOnClickListener {
             startActivity(Intent(this,Profile::class.java))
+            this.finish()
         }
 
         confirm.setOnClickListener{

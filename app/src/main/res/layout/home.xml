@@ -85,7 +85,7 @@
 
             <androidx.viewpager.widget.ViewPager
                 android:layout_width="match_parent"
-                android:layout_height="625dp"
+                android:layout_height="640dp"
                 android:id="@+id/viewPager"
                 android:layout_below="@+id/tab">
             </androidx.viewpager.widget.ViewPager>

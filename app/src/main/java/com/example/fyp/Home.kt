@@ -128,11 +128,10 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     user =snapshot.getValue<Users>(Users::class.java)!!
-                    username.text = user.username
-                    Picasso.get().load(user.image).placeholder(R.drawable.profile).into(userImage)
+                    username.text = user!!.username
+                    Picasso.get().load(user!!.image).into(userImage)
                 }
             }
-
         })
     }
 }

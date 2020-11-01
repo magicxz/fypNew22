@@ -39,6 +39,7 @@ class Login : AppCompatActivity() {
 
         back.setOnClickListener{
             startActivity(Intent(this,Home::class.java))
+            this.finish()
         }
 
         val text = findViewById<TextView>(R.id.forgotPass)
@@ -53,10 +54,12 @@ class Login : AppCompatActivity() {
 
         forgotPass.setOnClickListener{
             startActivity(Intent(this,ForgotPassword::class.java))
+            this.finish()
         }
 
         register.setOnClickListener{
             startActivity(Intent(this,Register::class.java))
+            this.finish()
         }
 
         btnLogin.setOnClickListener{
