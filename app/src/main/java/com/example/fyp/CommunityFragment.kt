@@ -51,7 +51,6 @@ class CommunityFragment : Fragment(){
 
         postlist = mutableListOf()
 
-
         addToList(root)
 
         return root

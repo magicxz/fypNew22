@@ -7,13 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.res.ColorStateListInflaterCompat.inflate
 import androidx.core.content.res.ComplexColorCompat.inflate
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -22,16 +21,22 @@ import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.comment.view.*
+import kotlinx.android.synthetic.main.fragment_community.view.*
 import kotlinx.android.synthetic.main.load_post.*
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.logging.Handler
 
 class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<CommunityAdapter.MyViewHolder>() {
 
     lateinit var ref: DatabaseReference
+    lateinit var ref1: DatabaseReference
     lateinit var query: Query
     lateinit var query1: Query
     lateinit var query2: Query
     lateinit var query3: Query
+    lateinit var commentList: MutableList<Comment>
 
     inner class MyViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
         var userImg : CircleImageView = itemView.findViewById(R.id.userImg)
@@ -42,7 +47,6 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
         var love : ImageView = itemView.findViewById(R.id.love)
         var likeCount : TextView = itemView.findViewById(R.id.likeCount)
         var comment : TextView = itemView.findViewById(R.id.comment)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -149,6 +153,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                 }
             }
         })
+
         query2 = FirebaseDatabase.getInstance().getReference("Like").child(postId!!)
 
         query2.addValueEventListener(object : ValueEventListener {
@@ -170,6 +175,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
         holder.comment.setOnClickListener {
             val layoutInflater = LayoutInflater.from(holder.comment.context).inflate(R.layout.comment,null,true)
             val dialog = BottomSheetDialog(holder.comment.context)
+            val reComment = layoutInflater.findViewById<RecyclerView>(R.id.reComment)
 
             layoutInflater.send.setOnClickListener {
                 dialog.dismiss()
@@ -178,11 +184,79 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
             dialog.setContentView(layoutInflater)
             dialog.show()
 
-            val a = layoutInflater.findViewById<RecyclerView>(R.id.reComment)
+            val send = layoutInflater.findViewById<ImageView>(R.id.send)
+            val commContent = layoutInflater.findViewById<EditText>(R.id.writecomment)
 
-            //a.isVisible = true
-            //val intent = Intent(holder.comment.context, AddComment::class.java)
-            //holder.comment.context.startActivity(intent)
+            send.setOnClickListener {
+                //Toast.makeText(send.context,"Comment Fail",Toast.LENGTH_LONG).show()
+
+                if (commContent.text.isEmpty()){
+                    Toast.makeText(commContent.context,"Comment cannot be empty!",Toast.LENGTH_LONG).show()
+                }else{
+                    val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
+                    val postId = posts[position].postId
+
+                    ref1 = FirebaseDatabase.getInstance().getReference("Comment")
+                    val commentId =ref1.push().key
+
+                    val mapComment = Comment(commentId!!,postId!!,currentUserID,commContent.text.toString(),getTime())
+
+                    //val mapComment = HashMap<String,Any>()
+                    //mapComment["commentId"] = commentId
+                    //mapComment["postId"] = postId
+                    //mapComment["userId"] = currentUserID
+                    //mapComment["commentContent"] = commContent
+                    //mapComment["datetime"] = getTime()
+
+                    ref1.child(commentId).setValue(mapComment).addOnCompleteListener{task ->
+                        if(task.isSuccessful){
+                            commContent.setText("")
+                            Toast.makeText(reComment.context,"Comment Successful!!!",Toast.LENGTH_LONG).show()
+                            //val intent = Intent(reComment.context, Home::class.java)
+                            //reComment.context.startActivity(intent)
+                        }else{
+                            Toast.makeText(reComment.context,"Comment Fail",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            val img = layoutInflater.findViewById<ImageView>(R.id.img)
+            val nocomm = layoutInflater.findViewById<TextView>(R.id.nocomment)
+            commentList = mutableListOf()
+            query3 = FirebaseDatabase.getInstance().getReference("Comment").orderByChild("postId").equalTo(postId)
+
+            query3.addValueEventListener(object : ValueEventListener{
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()){
+                        img.isVisible = false
+                        nocomm.isVisible = false
+                        commentList.clear()
+
+                        for(h in snapshot.children){
+                            val comment = h.getValue(Comment::class.java)
+                            commentList.add(comment!!)
+                        }
+
+                        val mLayoutManager = LinearLayoutManager(reComment.context)
+                        mLayoutManager.reverseLayout = true
+
+                        reComment.layoutManager = mLayoutManager
+                        reComment.scrollToPosition(commentList.size-1)
+                        reComment.adapter = CommentAdapter(commentList)
+                    }
+                }
+            })
         }
+    }
+
+    private fun getTime(): String {
+
+        val today = LocalDateTime.now(ZoneId.systemDefault())
+
+        return today.format(DateTimeFormatter.ofPattern("d MMM uuuu HH:mm:ss "))
     }
 }
