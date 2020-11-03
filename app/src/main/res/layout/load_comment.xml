@@ -28,7 +28,8 @@
         app:contentPaddingLeft="15dp"
         app:contentPaddingRight="15dp"
         app:contentPaddingTop="5dp"
-        app:contentPaddingBottom="5dp">
+        app:contentPaddingBottom="5dp"
+        android:layout_marginBottom="5dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -60,15 +61,7 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:layout_below="@+id/commDate"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:id="@+id/imgView_line"
-        android:background="@color/black"
-        android:layout_below="@+id/card"
-        android:layout_marginTop="15dp" />
 </RelativeLayout>

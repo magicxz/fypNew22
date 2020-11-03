@@ -47,6 +47,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
         var love : ImageView = itemView.findViewById(R.id.love)
         var likeCount : TextView = itemView.findViewById(R.id.likeCount)
         var comment : TextView = itemView.findViewById(R.id.comment)
+        var commentCount : TextView = itemView.findViewById(R.id.commentCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -112,7 +113,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                                 holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
                             }
                             else{
-                                holder.likeCount.text = "0 likes"
+                                holder.likeCount.text = "Be the first to like this"
                             }
                         }
                     })
@@ -143,7 +144,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                                     holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
                                 }
                                 else{
-                                    holder.likeCount.text = "0 likes"
+                                    holder.likeCount.text = "Be the first to like this"
                                 }
                             }
                         })
@@ -167,7 +168,25 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                     holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
                 }
                 else{
-                    holder.likeCount.text = " Be the first to like this!"
+                    holder.likeCount.text = " Be the first to like this"
+                }
+            }
+        })
+
+        query3 = FirebaseDatabase.getInstance().getReference("Comment").orderByChild("postId").equalTo(postId)
+
+        query3.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    CountOrder.total = (p0.childrenCount.toString()).toInt()
+                    holder.commentCount.text = CountOrder.total.toString() + " comments"
+                }
+                else{
+                    holder.commentCount.text = "no comment..."
                 }
             }
         })
@@ -239,6 +258,8 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                         for(h in snapshot.children){
                             val comment = h.getValue(Comment::class.java)
                             commentList.add(comment!!)
+                            CountOrder.number = commentList.size
+                            holder.commentCount.text = CountOrder.number.toString() + " comments"
                         }
 
                         val mLayoutManager = LinearLayoutManager(reComment.context)
@@ -247,6 +268,8 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                         reComment.layoutManager = mLayoutManager
                         reComment.scrollToPosition(commentList.size-1)
                         reComment.adapter = CommentAdapter(commentList)
+                    }else{
+                        holder.commentCount.text = "no comment..."
                     }
                 }
             })

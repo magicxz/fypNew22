@@ -68,12 +68,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/likeCount"
-            android:text=" Be the first like!"
+            android:text=" Be the first to like this"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
             android:textSize="15dp"
             android:drawableLeft="@drawable/ic_003_heart_clicked"
+            android:layout_below="@+id/picture"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentCount"
+            android:text="no comment..."
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/likeCount"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="25dp"
+            android:textSize="15dp"
             android:layout_below="@+id/picture"/>
 
         <ImageView
