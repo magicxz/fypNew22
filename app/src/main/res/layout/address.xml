@@ -2,7 +2,10 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".LoadAddress">
 
    <include layout="@layout/white_back"/>
 
@@ -23,5 +26,13 @@
         android:layout_below="@+id/textaddress"
         android:layout_marginTop="20dp">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/addAddress"
+        android:src="@drawable/ic_outline_white_add_circle"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

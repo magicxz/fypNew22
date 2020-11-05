@@ -96,6 +96,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.navOrder -> {
             }
             R.id.navAddress -> {
+                startActivity(Intent(this, AddAddress::class.java))
             }
             R.id.navNotification -> {
             }
