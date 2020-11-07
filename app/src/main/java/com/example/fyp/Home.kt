@@ -34,8 +34,6 @@ import kotlinx.android.synthetic.main.profile.*
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var user = Users()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -96,7 +94,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.navOrder -> {
             }
             R.id.navAddress -> {
-                startActivity(Intent(this, AddAddress::class.java))
+                startActivity(Intent(this, LoadAddress::class.java))
             }
             R.id.navNotification -> {
             }
@@ -118,6 +116,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
     private fun displayName(){
+        //var user = Users()
         var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
         val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser)
 
@@ -128,7 +127,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    user =snapshot.getValue<Users>(Users::class.java)!!
+                    val user =snapshot.getValue(Users::class.java)!!
                     username.text = user!!.username
                     Picasso.get().load(user!!.image).into(userImage)
                 }

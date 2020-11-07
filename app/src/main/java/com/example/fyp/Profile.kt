@@ -186,6 +186,10 @@ class Profile : AppCompatActivity() {
                     this.finish()
                 }
             }
+        }else{
+            done.setOnClickListener {
+                this.finish()
+            }
         }
     }
 }
