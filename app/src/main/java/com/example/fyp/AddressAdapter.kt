@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
+import com.google.firebase.database.*
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.add_address.*
 import kotlinx.android.synthetic.main.edit_address.view.*
+import kotlinx.android.synthetic.main.home.*
 
 class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<AddressAdapter.MyViewHolder>() {
 
@@ -21,6 +20,7 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
     lateinit var ref1: DatabaseReference
     var addre = Address()
     lateinit var query : Query
+    lateinit var addressList : MutableList<Address>
 
     inner class MyViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
         var addressType = itemView.findViewById<TextView>(R.id.addressType)
@@ -75,9 +75,11 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
             aPostcode.setText(holder.postcode.text)
             aCity.setText(holder.city.text)
 
+            addressList = mutableListOf()
+
             close.setOnClickListener {
-                val intent = Intent(layoutInflater.context, LoadAddress::class.java)
-                layoutInflater.context.startActivity(intent)
+                addressList.clear()
+                dialog.dismiss()
             }
 
             save.setOnClickListener {
@@ -140,6 +142,7 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
                     Toast.makeText(layoutInflater.context,"Update Successful!!!",Toast.LENGTH_SHORT).show()
                     val intent = Intent(layoutInflater.context, LoadAddress::class.java)
                     layoutInflater.context.startActivity(intent)
+                    addressList.clear()
                 }else{
                     Toast.makeText(layoutInflater.context,"nothing",Toast.LENGTH_SHORT)
                 }
@@ -151,12 +154,15 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
             val dialogBuilder = AlertDialog.Builder(holder.deleteAddress.context)
                 .setTitle("Remove Address").setIcon(R.drawable.icon).setPositiveButton("Yes"){_, _ ->
                     FirebaseDatabase.getInstance().getReference("Address").child(addressId).removeValue()
+                    addressList.clear()
                 }
                 .setNegativeButton("No"){_, _ ->
-                    val intent = Intent(holder.deleteAddress.context, LoadAddress::class.java)
-                    holder.deleteAddress.context.startActivity(intent)
+                    //val intent = Intent(holder.deleteAddress.context, LoadAddress::class.java)
+                    //holder.deleteAddress.context.startActivity(intent)
                 }.create()
             dialogBuilder.show()
         }
+
+
     }
 }

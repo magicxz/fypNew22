@@ -39,6 +39,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -50,4 +51,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
 }

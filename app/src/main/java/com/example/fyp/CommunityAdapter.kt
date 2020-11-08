@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +33,15 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
 
     lateinit var ref: DatabaseReference
     lateinit var ref1: DatabaseReference
+    lateinit var ref2: DatabaseReference
+    lateinit var ref3: DatabaseReference
     lateinit var query: Query
     lateinit var query1: Query
     lateinit var query2: Query
     lateinit var query3: Query
+    lateinit var query4: Query
     lateinit var commentList: MutableList<Comment>
+    var likeNotify = LikeNotification()
 
     inner class MyViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
         var userImg : CircleImageView = itemView.findViewById(R.id.userImg)
@@ -119,7 +124,30 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                     })
 
                     holder.love.setOnClickListener {
+                        query4 = FirebaseDatabase.getInstance().getReference("LikeNotification")
+                            .child(postId!!)
+                            .child(currentUserID)
+
+                        //get the fcking notifcation ID first
+                        query4.addValueEventListener(object: ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError) {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                if(p0.exists()){
+
+                                    likeNotify.notificationID = p0.value.toString()
+                                    //likeNotificationList.add(likeNot!!)
+
+                                    getKey.key=p0.value.toString()
+                                    Log.d("abcdddd", getKey.key)
+
+                                }
+                            }
+                        })
                         FirebaseDatabase.getInstance().getReference("Like").child(postId).child(currentUserID).removeValue()
+                        FirebaseDatabase.getInstance().getReference("Notification").child(getKey.key).removeValue()
                         holder.love.setImageResource(R.drawable.ic_002_heart)
                     }
                 }else{
@@ -129,6 +157,26 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                         }
 
                         ref = FirebaseDatabase.getInstance().getReference("Like")
+                        ref2 = FirebaseDatabase.getInstance().getReference("Notification")
+                        ref3 = FirebaseDatabase.getInstance().getReference("LikeNotification")
+
+                        val notify = ref2.push().key
+
+                        val notifyMap = HashMap<String,Any>()
+                        notifyMap[currentUserID] ="true"
+                        notifyMap["notificationId"] = notify!!
+
+                        val user = Users()
+
+                        if(!(currentUserID.equals(userId))){
+                            val message = user.username + " like your post"
+
+                            val storeNotify = Notification(notify!!,getTime(),userId,currentUserID,message,postId)
+
+                            ref2.child(notify).setValue(storeNotify)
+                            ref3.child(postId).child(currentUserID).setValue(notify!!)
+                        }
+
                         CountOrder.total = 0
 
                         query2 = FirebaseDatabase.getInstance().getReference("Like").child(postId!!)
@@ -150,6 +198,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                         })
                         ref.child(postId).child(currentUserID).setValue(true)
                         holder.love.setImageResource(R.drawable.ic_003_heart_clicked)
+
                     }
                 }
             }
@@ -282,4 +331,6 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
 
         return today.format(DateTimeFormatter.ofPattern("d MMM uuuu HH:mm:ss "))
     }
+
+
 }

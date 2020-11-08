@@ -34,11 +34,15 @@ import kotlinx.android.synthetic.main.profile.*
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    var add = Address()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
+
+        displayAddress()
 
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //setSupportActionBar(toolbar)
@@ -134,5 +138,29 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
         })
     }
+
+    private fun displayAddress(){
+        var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
+
+        //val usersRef1 = FirebaseDatabase.getInstance().getReference().child("Address").child(currentUser)
+        val query = FirebaseDatabase.getInstance().getReference("Address").child(currentUser)
+
+        query.addValueEventListener(object: ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+
+                    add =snapshot.getValue(Address::class.java)!!
+                    currentLoc.text = add!!.addressLine
+                    Toast.makeText(applicationContext,currentLoc.text.toString(),Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+
+
 }
 
