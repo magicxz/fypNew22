@@ -52,6 +52,10 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
         //val userId = address[position].userId
         //val addressId = address[position].addressId
 
+        //val intent = Intent(holder.addressType.context, Home::class.java)
+        //intent.putExtra("AddressId",address[position].addressId)
+        //holder.addressType.context.startActivity(intent)
+
         holder.editAddress.setOnClickListener {
             val layoutInflater = LayoutInflater.from(holder.editAddress.context).inflate(R.layout.edit_address,null,true)
             val dialogbuilder = AlertDialog.Builder(holder.editAddress.context)

@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.comment.view.*
 import kotlinx.android.synthetic.main.fragment_community.view.*
+import kotlinx.android.synthetic.main.header.*
 import kotlinx.android.synthetic.main.load_post.*
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -154,51 +155,56 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                     holder.love.setOnClickListener {
                         if(currentUserID == null){
                             Toast.makeText(holder.love.context,"Please Login First!!!",Toast.LENGTH_LONG).show()
-                        }
+                        }else{
+                            ref = FirebaseDatabase.getInstance().getReference("Like")
+                            ref2 = FirebaseDatabase.getInstance().getReference("Notification")
+                            ref3 = FirebaseDatabase.getInstance().getReference("LikeNotification")
 
-                        ref = FirebaseDatabase.getInstance().getReference("Like")
-                        ref2 = FirebaseDatabase.getInstance().getReference("Notification")
-                        ref3 = FirebaseDatabase.getInstance().getReference("LikeNotification")
+                            val notify = ref2.push().key
+                            var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
+                            val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser)
 
-                        val notify = ref2.push().key
-
-                        val notifyMap = HashMap<String,Any>()
-                        notifyMap[currentUserID] ="true"
-                        notifyMap["notificationId"] = notify!!
-
-                        val user = Users()
-
-                        if(!(currentUserID.equals(userId))){
-                            val message = user.username + " like your post"
-
-                            val storeNotify = Notification(notify!!,getTime(),userId,currentUserID,message,postId)
-
-                            ref2.child(notify).setValue(storeNotify)
-                            ref3.child(postId).child(currentUserID).setValue(notify!!)
-                        }
-
-                        CountOrder.total = 0
-
-                        query2 = FirebaseDatabase.getInstance().getReference("Like").child(postId!!)
-
-                        query2.addValueEventListener(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                            }
-
-                            override fun onDataChange(p0: DataSnapshot) {
-                                if (p0.exists()) {
-                                    CountOrder.total = (p0.childrenCount.toString()).toInt()
-                                    holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
+                            usersRef.addValueEventListener(object: ValueEventListener{
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
                                 }
-                                else{
-                                    holder.likeCount.text = "Be the first to like this"
-                                }
-                            }
-                        })
-                        ref.child(postId).child(currentUserID).setValue(true)
-                        holder.love.setImageResource(R.drawable.ic_003_heart_clicked)
 
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if(snapshot.exists()){
+                                        if(!(currentUserID.equals(userId))){
+                                            val user =snapshot.getValue(Users::class.java)!!
+                                            val message = user.username + " like your post"
+                                            val storeNotify = Notification(notify!!,getTime(),userId,currentUserID,message,"false",postId)
+
+                                            ref2.child(notify).setValue(storeNotify)
+                                            ref3.child(postId).child(currentUserID).setValue(notify!!)
+                                        }
+                                    }
+                                }
+                            })
+
+                            CountOrder.total = 0
+
+                            query2 = FirebaseDatabase.getInstance().getReference("Like").child(postId!!)
+
+                            query2.addValueEventListener(object : ValueEventListener {
+                                override fun onCancelled(p0: DatabaseError) {
+                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                }
+
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    if (p0.exists()) {
+                                        CountOrder.total = (p0.childrenCount.toString()).toInt()
+                                        holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
+                                    }
+                                    else{
+                                        holder.likeCount.text = "Be the first to like this"
+                                    }
+                                }
+                            })
+                            ref.child(postId).child(currentUserID).setValue(true)
+                            holder.love.setImageResource(R.drawable.ic_003_heart_clicked)
+                        }
                     }
                 }
             }

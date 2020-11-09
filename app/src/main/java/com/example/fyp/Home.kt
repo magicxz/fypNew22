@@ -34,15 +34,13 @@ import kotlinx.android.synthetic.main.profile.*
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var add = Address()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        displayAddress()
+        //displayAddress()
 
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //setSupportActionBar(toolbar)
@@ -101,6 +99,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 startActivity(Intent(this, LoadAddress::class.java))
             }
             R.id.navNotification -> {
+                startActivity(Intent(this, LoadNotification::class.java))
             }
             R.id.navVoucher -> {
             }
@@ -143,6 +142,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
 
         //val usersRef1 = FirebaseDatabase.getInstance().getReference().child("Address").child(currentUser)
+        //val addId = intent.getStringExtra("AddressId")
         val query = FirebaseDatabase.getInstance().getReference("Address").child(currentUser)
 
         query.addValueEventListener(object: ValueEventListener{
@@ -153,14 +153,12 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
 
-                    add =snapshot.getValue(Address::class.java)!!
+                    val add =snapshot.getValue(Address::class.java)!!
                     currentLoc.text = add!!.addressLine
                     Toast.makeText(applicationContext,currentLoc.text.toString(),Toast.LENGTH_LONG).show()
                 }
             }
         })
     }
-
-
 }
 

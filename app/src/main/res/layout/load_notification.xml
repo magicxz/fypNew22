@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/black"
+    android:id="@+id/notiBackground">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="70dp"
+            android:id="@+id/proImg"
+            android:src="@drawable/profile"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            app:civ_border_width="0.5dp"
+            app:civ_border_color="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/message"
+            android:text="hi testing 123"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/proImg"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/notitime"
+            android:text="10-10-2020"
+            android:layout_toRightOf="@+id/proImg"
+            android:textColor="@color/white"
+            android:layout_below="@+id/message"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:id="@+id/imgView_line"
+            android:background="@color/white"
+            android:layout_below="@+id/proImg"
+            android:layout_marginTop="5dp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
