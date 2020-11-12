@@ -13,7 +13,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/show">
+            android:id="@+id/show"
+            android:visibility="gone">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="800dp"
@@ -73,28 +74,45 @@
         android:layout_marginTop="100dp"
         android:layout_marginLeft="35dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="to Login"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt2"
+                android:text="Or"
+                android:textColor="@color/black"
+                android:layout_toRightOf="@+id/loginNow"
+                android:layout_below="@+id/txt1"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="Sign Up"
         android:textSize="15dp"
-        android:textColor="@color/black"
-        android:layout_marginTop="7dp"
-        android:layout_marginLeft="175dp"
-        android:layout_below="@+id/txt1"/>
+        android:textColor="@color/red"
+        android:layout_toRightOf="@+id/txt2"
+        android:layout_below="@+id/txt1"
+        android:background="@drawable/button"
+        android:layout_marginTop="5dp"
+        android:textAllCaps="false"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        android:onClick="signUpClick"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:id="@+id/loginNow"
-        android:text="Click Me"
+        android:text="Login"
         android:background="@drawable/button"
         android:textColor="@color/red"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/txt1"
         android:textStyle="bold"
-        android:onClick="onLabelClick"/>
+        android:onClick="onLabelClick"
+        android:textAllCaps="false"/>
         </RelativeLayout>
 
     </RelativeLayout>

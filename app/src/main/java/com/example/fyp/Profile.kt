@@ -1,12 +1,14 @@
 package com.example.fyp
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -155,9 +157,13 @@ class Profile : AppCompatActivity() {
             val curUser = FirebaseDatabase.getInstance().getReference("Users")
             curUser.child(currentUser).setValue(user)
             progressDialog.dismiss()
-            Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_SHORT).show()
             startActivity(Intent(this,Profile::class.java))
             this.finish()
+            Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_LONG).show()
+        }else{
+            done.setOnClickListener {
+                this.finish()
+            }
         }
 
         if(imageUri != null){
@@ -182,13 +188,7 @@ class Profile : AppCompatActivity() {
                     usersRef!!.updateChildren(mapProfileImg)
                     progressDialog.dismiss()
                     Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this,Profile::class.java))
-                    this.finish()
                 }
-            }
-        }else{
-            done.setOnClickListener {
-                this.finish()
             }
         }
     }

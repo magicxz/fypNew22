@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -72,6 +73,9 @@ class CommunityFragment : Fragment(){
                         val post =h.getValue(Post::class.java)
                         postlist.add(post!!)
                     }
+
+                    val preference = root.context.getSharedPreferences("post", Context.MODE_PRIVATE)
+                    val postId = preference.getString("PostID","")
 
                     val mLayoutManager = LinearLayoutManager(activity)
                     mLayoutManager.reverseLayout = true

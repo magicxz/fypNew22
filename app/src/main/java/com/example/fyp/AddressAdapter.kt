@@ -153,6 +153,8 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
             }
         }
 
+        addressList = mutableListOf()
+
         holder.deleteAddress.setOnClickListener {
             val addressId = address[position].addressId
             val dialogBuilder = AlertDialog.Builder(holder.deleteAddress.context)
@@ -166,7 +168,5 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
                 }.create()
             dialogBuilder.show()
         }
-
-
     }
 }

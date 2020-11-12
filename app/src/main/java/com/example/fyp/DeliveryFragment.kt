@@ -13,6 +13,8 @@ class DeliveryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_delivery, container, false)
+        val root: View = inflater.inflate(R.layout.fragment_delivery, container, false)
+
+        return root
     }
 }

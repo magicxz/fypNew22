@@ -1,6 +1,7 @@
 package com.example.fyp
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
@@ -68,9 +69,9 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.datetime.text = posts[position].datetime
         holder.content.text = posts[position].content
-        val userId = posts[position].userId
+        var userId = posts[position].userId
         val picture = posts[position].postImage
-        val postId = posts[position].postId
+        var postId = posts[position].postId
 
         query= FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(userId)
 

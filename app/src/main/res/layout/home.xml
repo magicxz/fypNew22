@@ -34,35 +34,46 @@
                 android:id="@+id/toolbar"
                 android:background="@color/white">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/navMenu"
-                    android:src="@drawable/ic_baseline_menu" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deliver to:"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="30dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/navMenu"
+                        android:src="@drawable/ic_baseline_menu"
+                        android:layout_centerVertical="true"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/currentLoc"
-                    android:text="Current Location"
-                    android:textSize="20dp"
-                    android:textColor="@color/red"
-                    android:layout_marginLeft="5dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/deli"
+                        android:text="Deliver to :"
+                        android:layout_toRightOf="@+id/navMenu"
+                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="15dp" />
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/cart"
-                    android:src="@drawable/ic_outline_shopping_cart"
-                    android:layout_gravity="right" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/currentLoc"
+                        android:layout_toRightOf="@+id/navMenu"
+                        android:layout_below="@+id/deli"
+                        android:text="Current Location"
+                        android:textSize="15dp"
+                        android:textColor="@color/red"
+                        android:layout_marginLeft="15dp"/>
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/cart"
+                        android:src="@drawable/ic_outline_shopping_cart"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <ImageView

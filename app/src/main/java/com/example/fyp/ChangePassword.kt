@@ -1,10 +1,12 @@
 package com.example.fyp
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.EmailAuthProvider
@@ -31,6 +33,7 @@ class ChangePassword : AppCompatActivity() {
 
     private fun changePassword() {
         var auth= FirebaseAuth.getInstance()
+        val dialogBuilder = AlertDialog.Builder(this)
 
         if(oldPass.text.toString().isEmpty()){
             oldPass.error="Please enter current password"
@@ -61,20 +64,29 @@ class ChangePassword : AppCompatActivity() {
                                 ?.addOnCompleteListener{task ->
                                     if(task.isSuccessful){
                                         progressDialog.dismiss()
-                                        Toast.makeText(this,"Password Changed", Toast.LENGTH_SHORT).show()
-                                        this.finish()
-                                        startActivity(Intent(this,Profile::class.java))
+                                        dialogBuilder.setView(R.layout.okalertbox)
+                                        val dialog = dialogBuilder.create()
+                                        dialog.setTitle("Change Password")
+                                        dialog.show()
+
+                                        val ok = dialog.findViewById<Button>(R.id.ok)
+                                        ok.setOnClickListener {
+                                            dialog.dismiss()
+                                            startActivity(Intent(this,Profile::class.java))
+                                            this.finish()
+                                        }
+                                        //Toast.makeText(this,"Password Changed", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                         }else{
                             progressDialog.dismiss()
                             oldPass.error="Wrong current password"
-                            oldPass.requestFocus()
+                            //oldPass.requestFocus()
                         }
                     }
             }else{
                 cfmnewPass.error="Password mismatching"
-                cfmnewPass.requestFocus()
+                //cfmnewPass.requestFocus()
             }
         }
     }

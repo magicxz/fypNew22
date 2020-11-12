@@ -19,10 +19,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.header.*
@@ -34,13 +31,21 @@ import kotlinx.android.synthetic.main.profile.*
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    lateinit var ref1 : DatabaseReference
+    lateinit var ref2 : DatabaseReference
+    lateinit var addressList : MutableList<Address>
+    lateinit var userList : MutableList<Users>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        //displayAddress()
+        addressList = mutableListOf()
+        userList = mutableListOf()
+
+       displayAddress()
 
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //setSupportActionBar(toolbar)
@@ -61,7 +66,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         viewPager.adapter = PageAdapter(supportFragmentManager)
         tab.setupWithViewPager(viewPager)
 
-
         val menu = navBar.menu
         if(currentUser == null) {
             menu.findItem(R.id.navProfile).setVisible(false)
@@ -73,7 +77,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }else{
             displayName()
         }
-
     }
 
     override fun onBackPressed() {
@@ -118,8 +121,11 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         startActivity(Intent(this,Login::class.java))
     }
 
+    fun signUpClick(view: View){
+        startActivity(Intent(this,Register::class.java))
+    }
+
     private fun displayName(){
-        //var user = Users()
         var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
         val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser)
 
@@ -141,22 +147,39 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     private fun displayAddress(){
         var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
 
-        //val usersRef1 = FirebaseDatabase.getInstance().getReference().child("Address").child(currentUser)
-        //val addId = intent.getStringExtra("AddressId")
-        val query = FirebaseDatabase.getInstance().getReference("Address").child(currentUser)
+        ref2 = FirebaseDatabase.getInstance().getReference().child("Address")
+        ref1 = FirebaseDatabase.getInstance().getReference().child("Users")
 
-        query.addValueEventListener(object: ValueEventListener{
+        ref1.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-
-                    val add =snapshot.getValue(Address::class.java)!!
-                    currentLoc.text = add!!.addressLine
-                    Toast.makeText(applicationContext,currentLoc.text.toString(),Toast.LENGTH_LONG).show()
+                if (snapshot.exists()) {
+                    addressList.clear()
+                    for (h in snapshot.children) {
+                        val u = h.getValue(Address::class.java)
+                        addressList.add(u!!)
+                    }
                 }
+                ref2.addValueEventListener(object:ValueEventListener{
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            addressList.clear()
+                            userList.clear()
+                            for (j in snapshot.children) {
+                                if(!(j.child("userId").getValue().toString().equals(currentUser))){
+                                    currentLoc.text = j.child("addressLine").getValue().toString()
+                                }
+                            }
+                        }
+                    }
+                })
             }
         })
     }
