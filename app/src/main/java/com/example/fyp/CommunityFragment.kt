@@ -71,11 +71,12 @@ class CommunityFragment : Fragment(){
 
                     for(h in snapshot.children){
                         val post =h.getValue(Post::class.java)
+                        val postId = h.child("postId").getValue()
                         postlist.add(post!!)
                     }
 
                     val preference = root.context.getSharedPreferences("post", Context.MODE_PRIVATE)
-                    val postId = preference.getString("PostID","")
+                    //val postId = preference.getString("PostID","")
 
                     val mLayoutManager = LinearLayoutManager(activity)
                     mLayoutManager.reverseLayout = true

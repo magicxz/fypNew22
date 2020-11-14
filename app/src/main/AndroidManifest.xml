@@ -9,22 +9,19 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/BlackTheme">
-        <activity android:name=".ForgotPassword"
-            android:parentActivityName=".Login"/>
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".MainActivity"/>
         <activity android:name=".Register" />
         <activity android:name=".Login" />
         <activity android:name=".AddAddress" />
         <activity android:name=".LoadAddress"/>
         <activity android:name=".LoadNotification"/>
-        <activity android:name=".Profile"
-            android:parentActivityName=".Home"/>
-        <activity android:name=".ChangePassword"
-            android:parentActivityName=".Profile" />
-        <activity
-            android:name=".AddCommunity"
-            android:parentActivityName=".Home" />
-        <activity android:name=".Home">
+        <activity android:name=".Profile" />
+        <activity android:name=".ChangePassword" />
+        <activity android:name=".AddCommunity" />
+        <activity android:name=".PostDetails" />
+        <activity android:name=".Home"/>
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

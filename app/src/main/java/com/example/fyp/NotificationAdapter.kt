@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
@@ -21,6 +22,7 @@ import kotlin.concurrent.schedule
 class NotificationAdapter(var notification : MutableList<Notification>) : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(){
 
     lateinit var query: Query
+    lateinit var query1: Query
     lateinit var postList : MutableList<Post>
     var stop : Boolean = false
 
@@ -41,6 +43,7 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        postList = mutableListOf()
         holder.msg.text = notification[position].type
         holder.datetime.text = notification[position].date
         val sender = notification[position].sender
@@ -59,13 +62,9 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
             override fun onDataChange(p0: DataSnapshot) {
 
                 if(p0.exists()){
-
                     for(h in p0.children){
-
                         val targetUser = h.getValue(Users::class.java)
-                        //Toast.makeText(holder.content.context, "WTF is this " + user, Toast.LENGTH_SHORT).show()
                         val profilePhoto = targetUser!!.image
-
                         Picasso.get().load(profilePhoto).into(holder.senderImg)
                     }
                 }
@@ -74,23 +73,24 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
 
         holder.notiback.setOnClickListener {
             stop == false
-            query = FirebaseDatabase.getInstance().getReference("Post").child(notification[position].postId)
+            query1 = FirebaseDatabase.getInstance().getReference("Posts").child(notification[position].postId)
 
-            val preference = holder.notiback.context.getSharedPreferences("post", Context.MODE_PRIVATE)
-            val editor = preference.edit()
-
-            query.addValueEventListener(object: ValueEventListener {
+            query1.addValueEventListener(object: ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-
                     if (p0.exists()) {
                         val post = p0.getValue<Post>(Post::class.java)
                         postList.add(post!!)
                         CountOrder.getPost = post
-                        Log.d("hellowtf122",notification[position].postId )
+                        /*val postPhoto = p0.child("postImage").getValue().toString()
+                        val datetime = p0.child("datetime").getValue().toString()
+                        val content = p0.child("content").getValue().toString()
+                        intent.putExtra("PostPhoto",postPhoto)
+                        intent.putExtra("DateTime",datetime)
+                        intent.putExtra("Content",content)*/
 
                         //Post ID de user
                         query = FirebaseDatabase.getInstance().getReference("Users")
@@ -105,16 +105,24 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
 
                                 if (p0.exists()) {
                                     for (h in p0.children) {
-                                        val post = h.getValue(Post::class.java)
-                                        editor.putString("PostID",CountOrder.getPost.postId)
-                                        editor.putString("Date",CountOrder.getPost.datetime)
-                                        editor.putString("Content",CountOrder.getPost.content)
-                                        editor.putString("UserID",CountOrder.getPost.userId)
-                                        editor.putString("PostPhoto", CountOrder.getPost.postImage)
-                                        editor.putString("Username", CountOrder.getUser.username)
-                                        editor.putString("ProfilePhoto", CountOrder.getUser.image)
-                                        editor.apply()
-                                        postList.add(post!!)
+                                        val user = h.getValue(Users::class.java)
+                                        CountOrder.getUser= user!!
+                                        /*val userId = p0.child("uid").getValue().toString()
+                                        val username = p0.child("username").getValue().toString()
+                                        val profileImage = p0.child("image").getValue().toString()
+                                        intent.putExtra("UserId",userId)
+                                        intent.putExtra("Username",username)
+                                        intent.putExtra("ProfileImage",profileImage)*/
+
+                                        val intent = Intent(holder.notiback.context,PostDetails::class.java)
+                                        intent.putExtra("PostId", CountOrder.getPost.postId)
+                                        intent.putExtra("DateTime", CountOrder.getPost.datetime)
+                                        intent.putExtra("Content", CountOrder.getPost.content)
+                                        intent.putExtra("UserId", CountOrder.getPost.userId)
+                                        intent.putExtra("PostPhoto", CountOrder.getPost.postImage)
+                                        intent.putExtra("Username", CountOrder.getUser.username)
+                                        intent.putExtra("ProfileImage", CountOrder.getUser.image)
+                                        holder.notiback.context.startActivity(intent)
                                     }
                                 }
                             }
@@ -122,8 +130,8 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
                     }
                 }
             })
-            //val intent = Intent(holder.notiback.context, CommunityAdapter::class.java)
             //holder.notiback.context.startActivity(intent)
+
 
             Timer("SettingUp", false).schedule(1500) {
                 query = FirebaseDatabase.getInstance().getReference("Notification")

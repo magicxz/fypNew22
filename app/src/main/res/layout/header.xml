@@ -17,11 +17,21 @@
             android:visibility="gone">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="800dp"
-                android:layout_height="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/img"
                 android:src="@drawable/logo"
                 android:layout_marginLeft="195dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="25dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24 Fats"
+                android:textColor="@color/black"
+                android:textStyle="italic|bold"
+                android:layout_below="@+id/img"
+                android:layout_alignParentRight="true"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="80dp"

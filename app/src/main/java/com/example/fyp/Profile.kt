@@ -51,7 +51,6 @@ class Profile : AppCompatActivity() {
 
         chgPass.setOnClickListener{
             startActivity(Intent(this,ChangePassword::class.java))
-            this.finish()
         }
 
         displayInfo()
@@ -160,10 +159,6 @@ class Profile : AppCompatActivity() {
             startActivity(Intent(this,Profile::class.java))
             this.finish()
             Toast.makeText(this,"Update Successful!!!",Toast.LENGTH_LONG).show()
-        }else{
-            done.setOnClickListener {
-                this.finish()
-            }
         }
 
         if(imageUri != null){

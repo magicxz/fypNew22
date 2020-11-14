@@ -37,13 +37,17 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
     lateinit var ref1: DatabaseReference
     lateinit var ref2: DatabaseReference
     lateinit var ref3: DatabaseReference
+    lateinit var ref4: DatabaseReference
     lateinit var query: Query
     lateinit var query1: Query
     lateinit var query2: Query
     lateinit var query3: Query
     lateinit var query4: Query
+    lateinit var query5: Query
     lateinit var commentList: MutableList<Comment>
+    lateinit var postList: MutableList<Post>
     var likeNotify = LikeNotification()
+    var commNotify = CommentNotification()
 
     inner class MyViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
         var userImg : CircleImageView = itemView.findViewById(R.id.userImg)
@@ -55,6 +59,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
         var likeCount : TextView = itemView.findViewById(R.id.likeCount)
         var comment : TextView = itemView.findViewById(R.id.comment)
         var commentCount : TextView = itemView.findViewById(R.id.commentCount)
+        var postDetail : RelativeLayout = itemView.findViewById(R.id.postdetail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -73,6 +78,8 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
         val picture = posts[position].postImage
         var postId = posts[position].postId
 
+        val intent = Intent(holder.postDetail.context, PostDetails::class.java)
+
         query= FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(userId)
 
         query.addValueEventListener(object : ValueEventListener{
@@ -89,6 +96,9 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
 
                         holder.username.text = user
                         Picasso.get().load(pic).into(holder.userImg)
+
+                        intent.putExtra("Username",user)
+                        intent.putExtra("ProfileImage",pic)
                     }
                 }
             }
@@ -118,6 +128,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                             if (p0.exists()) {
                                 CountOrder.total = (p0.childrenCount.toString()).toInt()
                                 holder.likeCount.text = " " + CountOrder.total.toString() + " likes"
+                                intent.putExtra("LikeCount"," " + CountOrder.total.toString() + " likes")
                             }
                             else{
                                 holder.likeCount.text = "Be the first to like this"
@@ -240,6 +251,7 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                 if (p0.exists()) {
                     CountOrder.total = (p0.childrenCount.toString()).toInt()
                     holder.commentCount.text = CountOrder.total.toString() + " comments"
+                    intent.putExtra("CommentCount"," " + CountOrder.total.toString() + " comments")
                 }
                 else{
                     holder.commentCount.text = "no comment..."
@@ -272,23 +284,37 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                     val postId = posts[position].postId
 
                     ref1 = FirebaseDatabase.getInstance().getReference("Comment")
+                    ref2 = FirebaseDatabase.getInstance().getReference("Notification")
+                    ref4 = FirebaseDatabase.getInstance().getReference("CommentNotification")
                     val commentId =ref1.push().key
+                    val notify = ref2.push().key
+                    val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID)
+
+                    usersRef.addValueEventListener(object: ValueEventListener{
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if(snapshot.exists()){
+                                if(!(currentUserID.equals(userId))){
+                                    val user =snapshot.getValue(Users::class.java)!!
+                                    val message = user.username + " comment on your post"
+                                    val storeNotify = Notification(notify!!,getTime(),userId,currentUserID,message,"false",postId)
+
+                                    ref2.child(notify).setValue(storeNotify)
+                                    ref4.child(postId).child(currentUserID).setValue(notify!!)
+                                }
+                            }
+                        }
+                    })
 
                     val mapComment = Comment(commentId!!,postId!!,currentUserID,commContent.text.toString(),getTime())
-
-                    //val mapComment = HashMap<String,Any>()
-                    //mapComment["commentId"] = commentId
-                    //mapComment["postId"] = postId
-                    //mapComment["userId"] = currentUserID
-                    //mapComment["commentContent"] = commContent
-                    //mapComment["datetime"] = getTime()
 
                     ref1.child(commentId).setValue(mapComment).addOnCompleteListener{task ->
                         if(task.isSuccessful){
                             commContent.setText("")
                             Toast.makeText(reComment.context,"Comment Successful!!!",Toast.LENGTH_LONG).show()
-                            //val intent = Intent(reComment.context, Home::class.java)
-                            //reComment.context.startActivity(intent)
                         }else{
                             Toast.makeText(reComment.context,"Comment Fail",Toast.LENGTH_SHORT).show()
                         }
@@ -329,6 +355,15 @@ class CommunityAdapter(val posts : MutableList<Post>): RecyclerView.Adapter<Comm
                     }
                 }
             })
+        }
+        holder.postDetail.setOnClickListener{
+            intent.putExtra("DateTime",posts[position].datetime)
+            intent.putExtra("PostPhoto",posts[position].postImage)
+            intent.putExtra("Content",posts[position].content)
+            intent.putExtra("UserId",posts[position].userId)
+            intent.putExtra("PostId",posts[position].postId)
+
+            holder.postDetail.context.startActivity(intent)
         }
     }
 

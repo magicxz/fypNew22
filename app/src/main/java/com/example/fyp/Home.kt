@@ -45,8 +45,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         addressList = mutableListOf()
         userList = mutableListOf()
 
-       displayAddress()
-
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //setSupportActionBar(toolbar)
         navBar.bringToFront()
@@ -75,6 +73,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             menu.findItem(R.id.navVoucher).setVisible(false)
             menu.findItem(R.id.navLogout).setVisible(false)
         }else{
+            displayAddress()
             displayName()
         }
     }
@@ -136,7 +135,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    val user =snapshot.getValue(Users::class.java)!!
+                    val user =snapshot.getValue(Users::class.java)
                     username.text = user!!.username
                     Picasso.get().load(user!!.image).into(userImage)
                 }
@@ -173,7 +172,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                             addressList.clear()
                             userList.clear()
                             for (j in snapshot.children) {
-                                if(!(j.child("userId").getValue().toString().equals(currentUser))){
+                                if(j.child("userId").getValue().toString().equals(currentUser)){
                                     currentLoc.text = j.child("addressLine").getValue().toString()
                                 }
                             }

@@ -21,7 +21,7 @@ class ChangePassword : AppCompatActivity() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         back2.setOnClickListener {
-            startActivity(Intent(this,Profile::class.java))
+            //startActivity(Intent(this,Profile::class.java))
             this.finish()
         }
 

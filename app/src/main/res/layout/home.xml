@@ -61,10 +61,10 @@
                         android:id="@+id/currentLoc"
                         android:layout_toRightOf="@+id/navMenu"
                         android:layout_below="@+id/deli"
-                        android:text="Current Location"
                         android:textSize="15dp"
                         android:textColor="@color/red"
-                        android:layout_marginLeft="15dp"/>
+                        android:layout_marginLeft="15dp"
+                        android:hint="Add your address..."/>
 
                     <ImageView
                         android:layout_width="50dp"
