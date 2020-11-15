@@ -160,7 +160,6 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
             val dialogBuilder = AlertDialog.Builder(holder.deleteAddress.context)
                 .setTitle("Remove Address").setIcon(R.drawable.icon).setPositiveButton("Yes"){_, _ ->
                     FirebaseDatabase.getInstance().getReference("Address").child(addressId).removeValue()
-                    addressList.clear()
                 }
                 .setNegativeButton("No"){_, _ ->
                     //val intent = Intent(holder.deleteAddress.context, LoadAddress::class.java)
@@ -168,5 +167,6 @@ class AddressAdapter(var address : MutableList<Address>): RecyclerView.Adapter<A
                 }.create()
             dialogBuilder.show()
         }
+        //addressList.clear()
     }
 }

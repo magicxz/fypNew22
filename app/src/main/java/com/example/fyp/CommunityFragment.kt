@@ -71,7 +71,7 @@ class CommunityFragment : Fragment(){
 
                     for(h in snapshot.children){
                         val post =h.getValue(Post::class.java)
-                        val postId = h.child("postId").getValue()
+                        //val postId = h.child("postId").getValue()
                         postlist.add(post!!)
                     }
 

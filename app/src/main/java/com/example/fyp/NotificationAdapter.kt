@@ -31,6 +31,7 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
         var datetime = itemView.findViewById<TextView>(R.id.notitime)
         var notiback = itemView.findViewById<CardView>(R.id.notiBackground)
         var senderImg = itemView.findViewById<CircleImageView>(R.id.proImg)
+        var postImage = itemView.findViewById<ImageView>(R.id.postImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -66,6 +67,24 @@ class NotificationAdapter(var notification : MutableList<Notification>) : Recycl
                         val targetUser = h.getValue(Users::class.java)
                         val profilePhoto = targetUser!!.image
                         Picasso.get().load(profilePhoto).into(holder.senderImg)
+                    }
+                }
+            }
+        })
+
+        query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("postId").equalTo(notification[position].postId)
+
+        query.addValueEventListener(object:ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    for(h in snapshot.children){
+                        val post = h.getValue(Post::class.java)
+                        val postImage = post!!.postImage
+                        Picasso.get().load(postImage).into(holder.postImage)
                     }
                 }
             }

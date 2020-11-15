@@ -21,6 +21,7 @@ class LoadAddress : AppCompatActivity(){
         setContentView(R.layout.address)
 
         addressList = mutableListOf()
+        addressList.clear()
         var currentUser= FirebaseAuth.getInstance().currentUser!!.uid
         query = FirebaseDatabase.getInstance().getReference("Address").orderByChild("userId").equalTo(currentUser)
 
@@ -31,9 +32,9 @@ class LoadAddress : AppCompatActivity(){
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
+                    addressList.clear()
                     addimg.isVisible = false
                     textAdd.isVisible = false
-                    addressList.clear()
 
                     for(h in snapshot.children){
                         val address = h.getValue(Address::class.java)

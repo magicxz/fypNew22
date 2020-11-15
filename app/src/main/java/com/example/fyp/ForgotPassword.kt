@@ -44,11 +44,11 @@ class ForgotPassword : AppCompatActivity() {
             auth.sendPasswordResetEmail(forgotEmail.text.toString())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this,"Email Sent", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Email Sent", Toast.LENGTH_LONG).show()
                         progressDialog.dismiss()
                         startActivity(Intent(this,Login::class.java))
                     }else{
-                        Toast.makeText(this,"This Email is not exist", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"This Email is not exist", Toast.LENGTH_LONG).show()
                         progressDialog.dismiss()
                     }
                 }

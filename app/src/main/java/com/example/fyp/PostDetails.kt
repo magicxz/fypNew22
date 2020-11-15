@@ -42,8 +42,6 @@ class PostDetails :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.post_details)
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-
         name1.text = intent.getStringExtra("Username")
         datetime1.text = intent.getStringExtra("DateTime")
         content1.text = intent.getStringExtra("Content")

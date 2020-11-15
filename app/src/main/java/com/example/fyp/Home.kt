@@ -70,7 +70,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             menu.findItem(R.id.navOrder).setVisible(false)
             menu.findItem(R.id.navAddress).setVisible(false)
             menu.findItem(R.id.navNotification).setVisible(false)
-            menu.findItem(R.id.navVoucher).setVisible(false)
             menu.findItem(R.id.navLogout).setVisible(false)
         }else{
             displayAddress()
@@ -102,8 +101,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             R.id.navNotification -> {
                 startActivity(Intent(this, LoadNotification::class.java))
-            }
-            R.id.navVoucher -> {
             }
             R.id.navLogout -> {
                 FirebaseAuth.getInstance().signOut()
@@ -137,7 +134,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 if(snapshot.exists()){
                     val user =snapshot.getValue(Users::class.java)
                     username.text = user!!.username
-                    Picasso.get().load(user!!.image).into(userImage)
+                    Picasso.get().load(user.image).into(userImage)
                 }
             }
         })
