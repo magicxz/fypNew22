@@ -126,7 +126,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     private fun displayName(){
         var currentUser=FirebaseAuth.getInstance().currentUser!!.uid
-        val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser)
+        val usersRef = FirebaseDatabase.getInstance().getReference("Users")
 
         usersRef.addValueEventListener(object: ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
@@ -135,9 +135,16 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    var user =snapshot.getValue(Users::class.java)
-                    username.text = user!!.username
-                    Picasso.get().load(user.image).into(userImage)
+                    for (j in snapshot.children) {
+                        if(j.child("uid").getValue().toString().equals(currentUser)) {
+                            username.text = j.child("username").getValue().toString()
+                            Picasso.get().load(j.child("image").getValue().toString()).into(userImage)
+                        }
+
+                    }
+                    //var user =snapshot.getValue(Users::class.java)
+                    //username.text = user!!.username
+                    //Picasso.get().load(user.image).into(userImage)
                 }
             }
         })
