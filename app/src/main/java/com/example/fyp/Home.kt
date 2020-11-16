@@ -75,6 +75,10 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             displayAddress()
             displayName()
         }
+
+        cart.setOnClickListener {
+            startActivity(Intent(this, CartDetail::class.java))
+        }
     }
 
     override fun onBackPressed() {
@@ -98,6 +102,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 startActivity(Intent(this, CartDetail::class.java))
             }
             R.id.navOrder -> {
+                startActivity(Intent(this, order_detail::class.java))
             }
             R.id.navAddress -> {
                 startActivity(Intent(this, LoadAddress::class.java))

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/BlackTheme">
-        <activity android:name=".order_detail"></activity>
+        <activity android:name=".order_detail"/>
         <activity android:name=".payment" />
         <activity android:name=".AddToCart" />
         <activity android:name=".FoodDetail" />

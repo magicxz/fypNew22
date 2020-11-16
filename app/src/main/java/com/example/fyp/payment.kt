@@ -74,8 +74,6 @@ class payment : AppCompatActivity() {
             val orderId = ref.push().key
 
             if (radioButton3.isChecked) {
-
-
                 ref1.addValueEventListener(object : ValueEventListener{
                     override fun onCancelled(error: DatabaseError) {
                         TODO("Not yet implemented")
@@ -86,30 +84,21 @@ class payment : AppCompatActivity() {
                             for(h in snapshot.children){
                                 val cart = h.getValue(Cart::class.java)
                                 cartList.add(cart!!)
-                                val qty = cart.cartQuantity
-                                val foodName = cart.name
-                                var subtotal = 0.0
-                                subtotal += cart.price * cart.cartQuantity
-                                var delivery = 0.0
-                                delivery = subtotal*0.1
-                                var total = 0.0
-                                total = subtotal + delivery
-                                Log.d("abcdddd", subtotal.toString())
-                                Log.d("123", qty.toString())
-                                Toast.makeText(applicationContext,total.toString(),Toast.LENGTH_LONG).show()
-                                val storeOrder = Order(orderId!!,getTime(),foodName,qty,"pending",total,radioButton3.text.toString(),currentUser)
+                                var total = intent.getStringExtra("Total")
+                                var sub = intent.getStringExtra("sub")
+                                var deliveryFee = intent.getStringExtra("DeliveryFee")
+                                Log.d("123", total.toString())
+                                val storeOrder = Order(orderId!!,getTime(),"pending",sub.toDouble(),deliveryFee.toDouble(),total.toDouble(),radioButton3.text.toString(),currentUser)
                                 ref.child(orderId).setValue(storeOrder)
-                                }
-
-
-                    }
+                                Toast.makeText(applicationContext,"Order Success!!!",Toast.LENGTH_LONG).show()
+                            }
+                        }
                     }
                 })
-                }
-
+            }else{
+                Toast.makeText(applicationContext,"Please select your payment method",Toast.LENGTH_LONG).show()
+            }
         }
-
-
     }
 
     private fun getTime(): String {

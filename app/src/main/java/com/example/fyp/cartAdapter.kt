@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 
 class cartAdapter (var cart: MutableList<Cart>):
@@ -23,6 +24,11 @@ class cartAdapter (var cart: MutableList<Cart>):
         holder.quantity.text = cart[position].cartQuantity.toString()
 
         Picasso.get().load(cart[position].image).into(holder.image1)
+
+        holder.close.setOnClickListener {
+            val cartId = cart[position].cartId
+            FirebaseDatabase.getInstance().getReference("Carts").child(cartId).removeValue()
+        }
 
         /* holder.image1.setOnClickListener{
              val intent = Intent(holder.name1.context, payment::class.java)
@@ -44,6 +50,6 @@ class cartAdapter (var cart: MutableList<Cart>):
         val quantity: TextView = itemView.findViewById(R.id.textView3)
         val price1: TextView = itemView.findViewById(R.id.price1)
         val image1: ImageView = itemView.findViewById((R.id.image2))
-
+        val close : ImageView = itemView.findViewById(R.id.deleteCart)
     }
 }
