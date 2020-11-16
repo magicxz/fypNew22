@@ -12,6 +12,11 @@
             android:icon="@drawable/ic_outline_profile" />
 
         <item
+            android:id="@+id/navCart"
+            android:title="Cart"
+            android:icon="@drawable/ic_outline_shopping_cart" />
+
+        <item
             android:id="@+id/navOrder"
             android:title="My Orders"
             android:icon="@drawable/ic_outline_order"/>
@@ -25,6 +30,7 @@
             android:id="@+id/navNotification"
             android:title="My Notification"
             android:icon="@drawable/ic_outline_notifications"/>
+
     </group>
 
     <item

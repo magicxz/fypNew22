@@ -94,6 +94,9 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.navProfile -> {
                 startActivity(Intent(this, Profile::class.java))
             }
+            R.id.navCart -> {
+                startActivity(Intent(this, CartDetail::class.java))
+            }
             R.id.navOrder -> {
             }
             R.id.navAddress -> {
@@ -132,7 +135,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    val user =snapshot.getValue(Users::class.java)
+                    var user =snapshot.getValue(Users::class.java)
                     username.text = user!!.username
                     Picasso.get().load(user.image).into(userImage)
                 }
